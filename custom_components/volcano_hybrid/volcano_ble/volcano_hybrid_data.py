@@ -203,8 +203,11 @@ class VolcanoHybridData:
 
     @property
     def current_temp(self) -> int | None:
-        """Get the current auto off time in minutes."""
-        if self._current_temp and self._current_temp > 0:
+        """Get the current temp."""
+        if (self._current_temp is not None and 
+            self._current_temp > 0 and 
+            self._current_temp <= 500 and  # Reasonable upper limit
+            (self.heater or self._current_temp > 10)):  # Only trust readings when heater is on or temp is reasonable
             return self._current_temp
         return None
 
